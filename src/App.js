@@ -1,25 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
+import './fonts/Raleway-VariableFont_wght.ttf'
+import GameFieldComponent from './components/gameField/GameFieldComponent';
 
 function App() {
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="game">
+      <div className="game-hint">
+        <img src="/assets/images/finger.svg" alt="" />
+        <p className='hint-text'>Перемещай предметы на картинку, чтобы отвечать на вопросы</p>
+      </div>
+      <GameFieldComponent/>
     </div>
-  );
+  )
 }
 
 export default App;
