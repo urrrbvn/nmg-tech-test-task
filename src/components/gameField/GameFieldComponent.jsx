@@ -34,9 +34,16 @@ const GameFieldComponent = () =>{
             }
         }
 
+    function gameZoneDragOver(e){
+        e.preventDefault()
+        console.log('game-zone');
+    }
+        
     function gameZoneDrop (e){
+        e.stopPropagation()
+        console.log(123);
         let item = e.dataTransfer.getData('text/plain')
-        console.log(item)
+        console.log(e.target)
         setPickedItem(item)
         setQuestionAttempted(true)
     }
@@ -49,9 +56,10 @@ const GameFieldComponent = () =>{
 
     return(
         <div className="game-container">
-            <div className="game-zone" onDragOver={(e)=>e.preventDefault()} onDrop={(e)=>gameZoneDrop(e)}>
-                <img className='illustration' src={`/assets/images/${!questionRight ? 'game1' :  'game2'}.png`} alt="" width='100%'/>
-                {
+            <div className="game-zone" onDragOver={(e)=>gameZoneDragOver(e)} onDrop={(e) => gameZoneDrop(e)}>
+                
+            </div>
+            {
                     !questionRight && (
                         <div className="items">
                         {
@@ -62,7 +70,6 @@ const GameFieldComponent = () =>{
                         </div>
                     )
                 }
-            </div>
             <div className="question-block">
                 <p className='question-text'>
                     {questionAttempted ? <span style={{color: questionRight ? 'green' : 'red'}}>{question.answerTitle}</span> : ''} 

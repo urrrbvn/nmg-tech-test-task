@@ -7,12 +7,17 @@ const ItemZoneComponent = ({item, rightAnswer})=>{
     const [position, setPosition] = useState({ left: '50%', top: '50%' })
     const [isDrag, setIsDrag] = useState(false)
 
-    function goBack(){
-        setPosition({top: '50%', left:'50%'})
+    function goBack(target){
+        target.classList.add('goingBack')
+        setTimeout(()=>{
+            setPosition({top: '50%', left:'50%'})
+        }, 10)
     }
 
     function ItemZoneDrop(e){
-        goBack()
+        e.stopPropagation()
+        // goBack(e.target)
+        console.log(e.currentTarget);
     }
     function itemDrag(e){
         if(isDrag){
@@ -34,24 +39,35 @@ const ItemZoneComponent = ({item, rightAnswer})=>{
 
     }
     function itemDragEnd(e){
-        e.target.style.transition = 'all 0.5s'
+        e.target.classList.add('ignore')
         setIsDrag(false)
         if(item !== rightAnswer){
-            setTimeout(()=>{
-                goBack()
-            }, 100)
-            
+            goBack(e.target)
         }
     }
+    function itemZoneDragOver(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.capture = true
+        console.log(1);
+    }
+    // function itemDragOver(e){
+    //     e.dropHandled = true
+    // }
+    // function itemDrop(e){
+    //     e.dropHandled = true    
+    // }
 
     return(
-        <div className="item-zone" onDragOver={(e)=>e.preventDefault()} onDrop={(e)=>ItemZoneDrop()}>
-            <img src="/assets/images/cloud.png" alt="" />
+        <div className="item-zone" onDragOverCapture={(e)=>itemZoneDragOver(e)} onDropCapture={(e)=>ItemZoneDrop(e)}>
+            <img className='cloud' src="/assets/images/cloud.png" alt=""/>
             <img className="game-item" src={`/assets/images/${item.name}.png`} alt="" 
                 draggable='true'
                 onDrag={(e)=>itemDrag(e)}
                 onDragStart={(e)=>itemDragStart(e,item)}
                 onDragEnd={(e)=>itemDragEnd(e)}
+                // onDragOver={(e)=> itemDragOver(e)}
+                // onDrop={(e)=>itemDrop(e)}
                 style={{top: position.top, left: position.left}}
             />
         </div>
